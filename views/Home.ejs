@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Declares the document type as HTML5 -->
+<html lang="en">
+<!-- Defines the root element of the HTML page, with English as the language -->
+  <head>
+    <!-- Contains metadata about the document -->
+    <meta charset="UTF-8" />
+    <!-- Specifies the character encoding as UTF-8, ensuring proper display of text -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Sets the viewport to make the website responsive, scaling to device width with no initial zoom -->
+    <title>Task Master</title>
+    <!-- Sets the title of the webpage displayed in the browser tab -->
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    />
+    <!-- Links to Bootstrap 4.5.3 CSS from a CDN for styling and responsive layout -->
+
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <!-- Links to Font Awesome 6.7.2 CSS from a CDN for including icons -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Links to a local custom CSS file (style.css) for additional styling -->
+  </head>
+  <body>
+    <!-- Contains the visible content of the webpage -->
+
+    <!-- Navigation Header -->
+    <div id="nav" class="text-center px-5 shadow-sm py-2 bg-info text-light">
+      <!-- A div for the navigation bar with centered text, padding, shadow, and Bootstrap classes for background (bg-info) and text color (text-light) -->
+      <h1><i class="fa-solid fa-bullseye"></i> Task Master</h1>
+      <!-- Displays the app title with a Font Awesome bullseye icon -->
+    </div>
+
+    <!-- Task Input Form -->
+    <div id="add_form" class="shadow border rounded p-5">
+      <!-- A div for the form with shadow, border, rounded corners, and padding using Bootstrap classes -->
+      <form action="/" method="post">
+        <!-- Form element that sends data to the root URL ("/") using the POST method -->
+        <h2 class="mb-2 text-center">Add New Task</h2>
+        <!-- A centered heading for the form with a small bottom margin -->
+        <div class="form-group">
+          <!-- Bootstrap class to group form elements and apply consistent styling -->
+          <input class="form-control" type="text" placeholder="New Task...">
+          <!-- Text input field with Bootstrap styling and a placeholder text -->
+        </div>
+        <button class="btn btn-block btn-info"><i class="fa-solid fa-plus"></i> ADD TASK</button>
+        <!-- A full-width button with Bootstrap info style and a Font Awesome plus icon to submit the form -->
+      </form>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- Includes jQuery 3.5.1 (slim version) from a CDN, required for Bootstrap's JavaScript functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <!-- Includes Bootstrap 4.5.3 JavaScript bundle (includes Popper.js) for interactive components -->
+  </body>
+</html>
