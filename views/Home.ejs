@@ -42,16 +42,25 @@
     <!-- Task Input Form -->
     <div id="add_form" class="shadow border rounded p-5">
       <!-- A div for the form with shadow, border, rounded corners, and padding using Bootstrap classes -->
+      <!-- Form element that sends data to the root URL ("/") using the POST method -->
+      <h2 class="mb-2 text-center">Add New Task</h2>
       <form action="/" method="post">
-        <!-- Form element that sends data to the root URL ("/") using the POST method -->
-        <h2 class="mb-2 text-center">Add New Task</h2>
         <!-- A centered heading for the form with a small bottom margin -->
         <div class="form-group">
           <!-- Bootstrap class to group form elements and apply consistent styling -->
-          <input class="form-control" type="text" placeholder="New Task...">
+          <input minlength="8" required class="form-control" name="title_input" type="text" placeholder="New Task...">
           <!-- Text input field with Bootstrap styling and a placeholder text -->
         </div>
-        <button class="btn btn-block btn-info"><i class="fa-solid fa-plus"></i> ADD TASK</button>
+        <div class="form-group">
+         <select class="form-control" name="status_input" >
+          <option selected disabled>Select Status</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+         </select>
+         
+          <!-- Text input field with Bootstrap styling and a placeholder text -->
+        </div>
+        <button type="submit" class="btn btn-block btn-info"><i class="fa-solid fa-plus"></i> ADD TASK</button>
         <!-- A full-width button with Bootstrap info style and a Font Awesome plus icon to submit the form -->
       </form>
     </div>
