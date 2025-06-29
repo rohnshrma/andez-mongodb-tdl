@@ -1,74 +1,126 @@
 <!DOCTYPE html>
-<!-- Declares the document type as HTML5 -->
+<!-- Declares the document type as HTML5, informing browsers to render the page using HTML5 standards -->
+
 <html lang="en">
-<!-- Defines the root element of the HTML page, with English as the language -->
+  <!-- Defines the root element of the HTML page, with 'lang="en"' specifying English as the document language -->
+
   <head>
-    <!-- Contains metadata about the document -->
+    <!-- Contains metadata about the document, such as character encoding, viewport settings, and linked resources -->
+
     <meta charset="UTF-8" />
-    <!-- Specifies the character encoding as UTF-8, ensuring proper display of text -->
+    <!-- Specifies UTF-8 character encoding to ensure proper display of text, including special characters -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Sets the viewport to make the website responsive, scaling to device width with no initial zoom -->
+    <!-- Configures the viewport for responsive design, setting the page width to the device's width and initial zoom to 1.0 (no zoom) -->
+
     <title>Task Master</title>
-    <!-- Sets the title of the webpage displayed in the browser tab -->
+    <!-- Sets the webpage title displayed in the browser tab or window -->
 
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     />
-    <!-- Links to Bootstrap 4.5.3 CSS from a CDN for styling and responsive layout -->
+    <!-- Links to Bootstrap 4.5.3 CSS from a CDN, providing pre-built styles for responsive layouts, buttons, forms, etc. -->
 
     <!-- Font Awesome CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     />
-    <!-- Links to Font Awesome 6.7.2 CSS from a CDN for including icons -->
+    <!-- Links to Font Awesome 6.7.2 CSS from a CDN, enabling the use of icons (e.g., bullseye, plus) in the page -->
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css" />
-    <!-- Links to a local custom CSS file (style.css) for additional styling -->
+    <!-- Links to a local custom CSS file (style.css) for additional or overriding styles specific to this application -->
   </head>
+
   <body>
-    <!-- Contains the visible content of the webpage -->
+    <!-- Contains the visible content of the webpage, rendered in the browser -->
 
     <!-- Navigation Header -->
     <div id="nav" class="text-center px-5 shadow-sm py-2 bg-info text-light">
-      <!-- A div for the navigation bar with centered text, padding, shadow, and Bootstrap classes for background (bg-info) and text color (text-light) -->
+      <!-- A div for the navigation header with Bootstrap classes: 'text-center' for centered text, 'px-5' for horizontal padding, 'shadow-sm' for a subtle shadow, 'py-2' for vertical padding, 'bg-info' for a teal background, and 'text-light' for white text -->
       <h1><i class="fa-solid fa-bullseye"></i> Task Master</h1>
-      <!-- Displays the app title with a Font Awesome bullseye icon -->
+      <!-- Displays the app title as a level-1 heading with a Font Awesome bullseye icon for visual enhancement -->
     </div>
 
     <!-- Task Input Form -->
     <div id="add_form" class="shadow border rounded p-5">
-      <!-- A div for the form with shadow, border, rounded corners, and padding using Bootstrap classes -->
-      <!-- Form element that sends data to the root URL ("/") using the POST method -->
+      <!-- A div for the task input form with Bootstrap classes: 'shadow' for a shadow effect, 'border' for a border, 'rounded' for rounded corners, and 'p-5' for large padding -->
       <h2 class="mb-2 text-center">Add New Task</h2>
+      <!-- A centered level-2 heading for the form with 'mb-2' for a small bottom margin -->
       <form action="/" method="post">
-        <!-- A centered heading for the form with a small bottom margin -->
+        <!-- A form element that sends data to the root URL ("/") using the HTTP POST method when submitted -->
         <div class="form-group">
-          <!-- Bootstrap class to group form elements and apply consistent styling -->
-          <input minlength="8" required class="form-control" name="title_input" type="text" placeholder="New Task...">
-          <!-- Text input field with Bootstrap styling and a placeholder text -->
+          <!-- Bootstrap class 'form-group' groups form elements (label and input) and applies consistent styling -->
+          <input
+            minlength="8"
+            required
+            class="form-control"
+            name="title_input"
+            type="text"
+            placeholder="New Task..."
+          />
+          <!-- A text input field with Bootstrap 'form-control' for styling, 'minlength="8"' to require at least 8 characters, 'required' to prevent empty submissions, 'name="title_input"' to identify the input in the form data, and 'placeholder' for a hint displayed in the empty field -->
         </div>
         <div class="form-group">
-         <select class="form-control" name="status_input" >
-          <option selected disabled>Select Status</option>
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-         </select>
-         
-          <!-- Text input field with Bootstrap styling and a placeholder text -->
+          <!-- Another Bootstrap 'form-group' for the status dropdown -->
+          <select class="form-control" name="status_input">
+            <!-- A dropdown menu with Bootstrap 'form-control' for styling and 'name="status_input"' to identify the selected value in the form data -->
+            <option selected disabled>Select Status</option>
+            <!-- Default option, selected and disabled to act as a placeholder, prompting the user to choose a status -->
+            <option value="pending">Pending</option>
+            <!-- Option for "Pending" status, with 'value="pending"' sent in the form data if selected -->
+            <option value="completed">Completed</option>
+            <!-- Option for "Completed" status, with 'value="completed"' sent in the form data if selected -->
+          </select>
         </div>
-        <button type="submit" class="btn btn-block btn-info"><i class="fa-solid fa-plus"></i> ADD TASK</button>
-        <!-- A full-width button with Bootstrap info style and a Font Awesome plus icon to submit the form -->
+        <button type="submit" class="btn btn-block btn-info">
+          <i class="fa-solid fa-plus"></i> ADD TASK
+        </button>
+        <!-- A submit button with Bootstrap classes: 'btn' for button styling, 'btn-block' to span the full width, 'btn-info' for a teal color, and a Font Awesome plus icon for visual enhancement -->
       </form>
     </div>
 
+    <div id="add_form" class="shadow border rounded p-5">
+      <!-- Another div with the same ID ('add_form') and Bootstrap classes as the form div (note: using the same ID for multiple elements is invalid HTML and should be unique) -->
+      <% if (typeof data === typeof []){%>
+      <!-- EJS conditional statement checking if the 'data' variable is an array (using 'typeof []' to compare types) -->
+      <% data.forEach(task => { %>
+      <!-- EJS loop iterating over each 'task' in the 'data' array, assuming 'data' contains task objects -->
+      <div
+        class="shadow p-2 px-4 mb-2 border rounded d-flex justify-content-between align-items-center"
+      >
+        <!-- A div for each task with Bootstrap classes: 'shadow' for a shadow effect, 'p-2' for padding, 'px-4' for extra horizontal padding, 'mb-2' for bottom margin, 'border' for a border, 'rounded' for rounded corners, 'd-flex' for flexbox layout, 'justify-content-between' to space content, and 'align-items-center' to vertically center items -->
+        <h3><%= task.title %></h3>
+        <!-- Displays the task's title as a level-3 heading, using EJS to render the 'title' property of the task object -->
+        <span class="badge badge-primary"><%= task.status %></span>
+        <!-- Displays the task's status in a Bootstrap badge with 'badge' for badge styling and 'badge-primary' for a blue color, rendering the 'status' property of the task object -->
+      </div>
+      <% }) %>
+      <!-- Closes the EJS forEach loop -->
+      <%}else{%>
+      <!-- EJS else block executed if 'data' is not an array -->
+      <h2 class="text-center">No Tasks Found</h2>
+      <!-- Displays a centered level-2 heading indicating no tasks are available -->
+      <%} %>
+      <!-- Closes the EJS conditional block -->
+    </div>
+
     <!-- Bootstrap JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <!-- Includes jQuery 3.5.1 (slim version) from a CDN, required for Bootstrap's JavaScript functionality -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-    <!-- Includes Bootstrap 4.5.3 JavaScript bundle (includes Popper.js) for interactive components -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Includes jQuery 3.5.1 (slim version) from a CDN, required for some Bootstrap JavaScript functionality (e.g., modals, dropdowns); includes integrity and crossorigin attributes for security -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Includes Bootstrap 4.5.3 JavaScript bundle (which includes Popper.js) from a CDN for interactive components like modals, tooltips, and dropdowns; includes integrity and crossorigin attributes -->
   </body>
 </html>
