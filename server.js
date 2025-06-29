@@ -15,90 +15,95 @@ const app = express();
 
 // Connect to the local MongoDB database named 'andez_tdlDB' on port 27017
 mongoose.connect("mongodb://localhost:27017/andez_tdlDB", {
-  useNewUrlParser: true, // Uses the new MongoDB connection string parser for compatibility
-  useUnifiedTopology: true, // Enables the new server discovery and monitoring engine for better reliability
+  useNewUrlParser: true, // Uses new MongoDB connection string parser
+  useUnifiedTopology: true, // Uses new server discovery and monitoring engine
 });
 
-// Define the Task schema, which serves as the blueprint for documents in the 'tasks' collection
+// Define the Task schema for the 'tasks' collection
 const taskSchema = new mongoose.Schema(
   {
     title: {
-      type: String, // Specifies the field type as String for the task title
-      minLength: [3, "Title must be at least 3 characters long"], // Enforces a minimum length of 3 characters, with a custom error message
-      required: [true, "Title is required"], // Makes the title field mandatory, with a custom error message
-      trim: true, // Automatically removes leading and trailing whitespace from the title
+      type: String, // Task title as String
+      minLength: [3, "Title must be at least 3 characters long"], // Minimum length of 3
+      required: [true, "Title is required"], // Mandatory field
+      trim: true, // Removes whitespace
     },
     status: {
-      type: String, // Specifies the field type as String for the task status
+      type: String, // Task status as String
       enum: {
-        values: ["pending", "completed"], // Restricts status to only 'pending' or 'completed'
-        message: "{VALUE} is not a valid status", // Custom error message for invalid status values
+        values: ["pending", "completed"], // Restricts to 'pending' or 'completed'
+        message: "{VALUE} is not a valid status", // Error for invalid status
       },
-      default: "pending", // Sets the default status to 'pending' if no value is provided
+      default: "pending", // Default status is 'pending'
     },
   },
   {
-    timestamps: true, // Automatically adds 'createdAt' and 'updatedAt' fields to track document creation and update times
+    timestamps: true, // Adds 'createdAt' and 'updatedAt' fields
   }
 );
 
-// Create the Task model, which maps to the 'tasks' collection in MongoDB
-const Task = mongoose.model("Task", taskSchema); // Defines the Task model, linking the schema to the 'tasks' collection (pluralized by Mongoose)
+// Create the Task model, mapping to the 'tasks' collection
+const Task = mongoose.model("Task", taskSchema);
 
-// Middleware: Serve static files (e.g., CSS, images) from the 'public' directory
-app.use(express.static("public")); // Allows Express to serve static files like style.css from the 'public' folder
+// Middleware: Serve static files from the 'public' directory
+app.use(express.static("public")); // Serves files like style.css
 
-// Middleware: Parse URL-encoded data (form submissions) with extended option for complex objects
-app.use(bodyParser.urlencoded({ extended: true })); // Parses form data from HTTP POST requests; 'extended: true' allows parsing of nested objects
-// Note: Since Express 4.16.0, body parsing is built-in (express.urlencoded), but body-parser is used here for explicitness
+// Middleware: Parse URL-encoded form data
+app.use(bodyParser.urlencoded({ extended: true })); // Parses form submissions
 
-// Set the view engine to EJS for rendering dynamic templates
-app.set("view engine", "ejs"); // Configures Express to use EJS for rendering views (e.g., Home.ejs)
+// Set EJS as the view engine for rendering templates
+app.set("view engine", "ejs");
 
-// Define a route for the root URL ("/") handling both GET and POST requests
+// Define routes for the root URL ("/") for GET and POST
 app
-  .route("/") // Groups routes for the root URL ("/") to handle multiple HTTP methods
+  .route("/")
   .get(async (req, res) => {
-    // Handles GET requests to display the task list
+    // Handles GET requests to display tasks
     try {
-      const tasks = await Task.find({}); // Queries MongoDB to retrieve all tasks from the 'tasks' collection
+      const tasks = await Task.find({}); // Fetches all tasks from MongoDB
       if (!tasks) {
-        // Checks if tasks is falsy (e.g., null or empty)
-        return; // Exits the function if no tasks are found (though this check may be unnecessary as an empty array is valid)
+        // Checks if tasks is falsy (redundant, as find returns an array)
+        return; // Exits if no tasks (could be removed)
       }
-      res.render("Home", { data: tasks }); // Renders the 'Home.ejs' template, passing the tasks array as 'data' to the template
+      res.render("Home", { data: tasks.length > 0 ? tasks : "No tasks" }); // Renders Home.ejs with tasks or "No tasks" string
     } catch (err) {
-      // Catches any errors during the database query
-      res.status(400).send("Failed to load tasks"); // Sends a 400 Bad Request response with an error message
+      // Handles database query errors
+      res.status(400).send("Failed to load tasks"); // Sends 400 error
     }
   })
   .post(async (req, res) => {
-    // Handles POST requests to add a new task
+    // Handles POST requests to add tasks
     try {
-      // Destructure form data from req.body, mapping to form field names from the HTML form
-      const { title_input, status_input } = req.body; // Extracts 'title_input' and 'status_input' from the form submission
-      // Create a new Task document using the Task model
+      const { title_input, status_input } = req.body; // Extracts form data
       const newTask = new Task({
-        title: title_input, // Maps the form's 'title_input' to the schema's 'title' field
-        status: status_input, // Maps the form's 'status_input' to the schema's 'status' field
+        title: title_input, // Maps form title to schema
+        status: status_input, // Maps form status to schema
       });
-      // Save the new task to the MongoDB database
-      await newTask.save(); // Persists the task document to the 'tasks' collection
-      // Log the saved task to the console for debugging
-      console.log(newTask, "added"); // Outputs the saved task object and "added" to the console
-      // Redirect to the root URL after successful save to avoid form resubmission
-      res.redirect("/"); // Redirects to the root URL, triggering a GET request to refresh the task list
+      await newTask.save(); // Saves task to MongoDB
+      console.log(newTask, "added"); // Logs saved task
+      res.redirect("/"); // Redirects to root to refresh task list
     } catch (err) {
-      // Catches any errors (e.g., validation failures or database issues)
-      // Log the error to the console for debugging
-      console.log(err); // Outputs the error details
-      // Send a 400 Bad Request response with an error message
-      res.status(400).send("Error saving task"); // Informs the client of the failure
+      // Handles errors (e.g., validation failures)
+      console.log(err); // Logs error details
+      res.status(400).send("Error saving task"); // Sends 400 error
     }
   });
 
-// Start the server and listen on the specified port
+// Define a route for deleting a task by ID
+app.route("/delete/:id").get(async (req, res) => {
+  // Handles GET requests to the /delete/:id route, where :id is a URL parameter
+  const { id } = req.params; // Extracts the 'id' parameter from the URL
+  try {
+    const task = await Task.findByIdAndDelete(id); // Finds and deletes the task with the specified ID in MongoDB
+    console.log("deleted task"); // Logs a confirmation message to the console
+    res.redirect("/"); // Redirects to the root URL to refresh the task list
+  } catch (err) {
+    // Catches errors (e.g., invalid ID or database issues)
+    res.status(400).send("Error deleting task"); // Sends a 400 Bad Request response with an error message
+  }
+});
+
+// Start the server on the specified port
 app.listen(PORT, () => {
-  // Log a message to the console when the server starts successfully
-  console.log(`Server started on port ${PORT}`); // Confirms the server is running and listening on port 3000
+  console.log(`Server started on port ${PORT}`); // Logs server start confirmation
 });
