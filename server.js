@@ -89,6 +89,24 @@ app
     }
   });
 
+app.route("/:status").get(async (req, res) => {
+  // Handles GET requests to display tasks
+  try {
+    const { status } = req.params;
+    const query =
+      status && ["pending", "completed"].includes(status) ? { status } : {};
+    const tasks = await Task.find(query); // Fetches all tasks from MongoDB
+    if (!tasks) {
+      // Checks if tasks is falsy (redundant, as find returns an array)
+      return; // Exits if no tasks (could be removed)
+    }
+    res.render("Home", { data: tasks.length > 0 ? tasks : "No tasks" }); // Renders Home.ejs with tasks or "No tasks" string
+  } catch (err) {
+    // Handles database query errors
+    res.status(400).send("Failed to load tasks"); // Sends 400 error
+  }
+});
+
 // Define a route for deleting a task by ID
 app.route("/delete/:id").get(async (req, res) => {
   // Handles GET requests to the /delete/:id route, where :id is a URL parameter

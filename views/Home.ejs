@@ -83,6 +83,12 @@
       </form>
     </div>
 
+    <div class="filter text-center">
+      <a class="btn btn-primary" href="/">All Tasks</a>
+      <a class="btn btn-success" href="/completed">Completed</a>
+      <a class="btn btn-warning" href="/pending">Pending</a>
+    </div>
+
     <div id="add_form" class="shadow border rounded p-5">
       <!-- Task list container with same ID as form ('add_form'); note: duplicate IDs are invalid HTML and should be unique -->
       <% if (typeof data === typeof []){%>
